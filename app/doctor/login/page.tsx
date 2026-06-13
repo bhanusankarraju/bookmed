@@ -2,33 +2,44 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Stethoscope, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Stethoscope, Mail, Lock, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { supabase } from '@/lib/supabaseClient';
 import Link from 'next/link';
 
 export default function DoctorLogin() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authError, setAuthError] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    setAuthError('');
     if (!email.trim()) {
-      toast.error('Please enter your email');
+      setAuthError('Please enter your email address.');
       return;
     }
     if (!password.trim()) {
-      toast.error('Please enter your password');
+      setAuthError('Please enter your password.');
       return;
     }
-    if (email === 'doctor@ecohealth.com' && password === 'password123') {
-      toast.success('Login successful!');
+
+    setIsSubmitting(true);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setIsSubmitting(false);
+
+    if (error) {
+      setAuthError(error.message);
+    } else if (data.user) {
       router.push('/doctor/dashboard');
-    } else {
-      toast.error('Invalid credentials. Try doctor@ecohealth.com / password123');
     }
   };
 
@@ -62,6 +73,12 @@ export default function DoctorLogin() {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-8 space-y-6">
+            {authError && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{authError}</AlertDescription>
+              </Alert>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email" className="text-slate-700 font-medium">
                 <Mail className="w-3.5 h-3.5 inline mr-1" />Email Address
@@ -92,12 +109,10 @@ export default function DoctorLogin() {
             <Button
               onClick={handleLogin}
               className="w-full bg-gradient-to-r from-slate-700 to-slate-900 text-white font-semibold hover:opacity-90 transition-opacity shadow-md shadow-slate-300"
+              disabled={isSubmitting}
             >
-              Sign In <ArrowRight className="w-4 h-4 ml-2" />
+              {isSubmitting ? 'Signing in...' : <>Sign In <ArrowRight className="w-4 h-4 ml-2" /></>}
             </Button>
-            <p className="text-xs text-center text-slate-400">
-              Demo: doctor@ecohealth.com / password123
-            </p>
           </CardContent>
         </Card>
       </div>

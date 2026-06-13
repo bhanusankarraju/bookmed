@@ -45,6 +45,19 @@ export default function DoctorDashboard() {
   const router = useRouter();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!data.user) {
+        router.replace('/doctor/login');
+      } else {
+        setIsAuthed(true);
+      }
+    };
+    checkSession();
+  }, [router]);
 
   const fetchAppointments = useCallback(async () => {
     setIsLoading(true);
@@ -100,6 +113,14 @@ export default function DoctorDashboard() {
     return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />{status}</Badge>;
   };
 
+  if (!isAuthed) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <RefreshCw className="w-8 h-8 text-slate-400 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -114,7 +135,7 @@ export default function DoctorDashboard() {
               <p className="text-xs text-slate-500 font-medium">Medical Staff Dashboard</p>
             </div>
           </Link>
-          <Button variant="ghost" size="sm" onClick={() => router.push('/doctor/login')} className="text-slate-600 hover:text-red-600 hover:bg-red-50">
+          <Button variant="ghost" size="sm" onClick={async () => { await supabase.auth.signOut(); router.push('/doctor/login'); }} className="text-slate-600 hover:text-red-600 hover:bg-red-50">
             <LogOut className="w-4 h-4 mr-1" />Logout
           </Button>
         </div>
