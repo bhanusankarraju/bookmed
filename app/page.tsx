@@ -139,6 +139,59 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
+        {/* Why Choose BookMed */}
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+          <div className="text-center mb-14 space-y-3">
+            <div className="flex items-center justify-center gap-2 text-emerald-600/70">
+              <Heart className="w-4 h-4" />
+              <span className="text-sm font-medium tracking-widest uppercase">Our Advantages</span>
+            </div>
+            <h3 className="text-3xl sm:text-4xl font-extrabold text-emerald-900 tracking-tight">
+              Why Choose BookMed?
+            </h3>
+            <p className="text-emerald-700/70 text-lg max-w-2xl mx-auto leading-relaxed">
+              A digital-first approach to healthcare that&apos;s better for patients, staff, and the planet.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+            {/* Zero Paper Waste */}
+            <div className="group relative bg-white rounded-2xl border border-emerald-100 shadow-sm p-8 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-100/50 hover:-translate-y-1 hover:border-emerald-200 overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 eco-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="w-14 h-14 rounded-2xl eco-gradient flex items-center justify-center shadow-lg shadow-emerald-200 mb-6 group-hover:scale-105 transition-transform duration-300">
+                <Leaf className="w-7 h-7 text-white" />
+              </div>
+              <h4 className="text-xl font-bold text-emerald-900 mb-3">Zero Paper Waste</h4>
+              <p className="text-emerald-700/70 text-sm leading-relaxed">
+                Eco-friendly digital prescription tracking and appointment records. Every booking saves paper, ink, and carbon — healthcare that heals the planet too.
+              </p>
+            </div>
+
+            {/* Instant Queue Updates */}
+            <div className="group relative bg-white rounded-2xl border border-emerald-100 shadow-sm p-8 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-100/50 hover:-translate-y-1 hover:border-emerald-200 overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 eco-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="w-14 h-14 rounded-2xl eco-gradient flex items-center justify-center shadow-lg shadow-emerald-200 mb-6 group-hover:scale-105 transition-transform duration-300">
+                <Activity className="w-7 h-7 text-white" />
+              </div>
+              <h4 className="text-xl font-bold text-emerald-900 mb-3">Instant Queue Updates</h4>
+              <p className="text-emerald-700/70 text-sm leading-relaxed">
+                Real-time live dashboard sync for doctors and patients. See appointment changes the moment they happen — no refresh, no delays, no confusion.
+              </p>
+            </div>
+
+            {/* 10-Second Login */}
+            <div className="group relative bg-white rounded-2xl border border-emerald-100 shadow-sm p-8 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-100/50 hover:-translate-y-1 hover:border-emerald-200 overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 eco-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="w-14 h-14 rounded-2xl eco-gradient flex items-center justify-center shadow-lg shadow-emerald-200 mb-6 group-hover:scale-105 transition-transform duration-300">
+                <ShieldCheck className="w-7 h-7 text-white" />
+              </div>
+              <h4 className="text-xl font-bold text-emerald-900 mb-3">10-Second Login</h4>
+              <p className="text-emerald-700/70 text-sm leading-relaxed">
+                Streamlined mobile-only access with no password fatigue. Patients verify their phone number and jump straight in — fast, secure, and effortless.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Footer */}
