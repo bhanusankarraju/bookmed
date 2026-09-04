@@ -9,14 +9,30 @@ function setToken(token) {
   else localStorage.removeItem('bookmed_token')
 }
 
+export function getDoctorInfo() {
+  const raw = localStorage.getItem('bookmed_doctor')
+  if (!raw) return null
+  try {
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
+function setDoctorInfo(doctor) {
+  if (doctor) localStorage.setItem('bookmed_doctor', JSON.stringify(doctor))
+  else localStorage.removeItem('bookmed_doctor')
+}
+
 export const api = {
   getToken,
   setToken,
+  getDoctorInfo,
 
   async login(email, password) {
     const { data, error } = await supabase
       .from('doctors')
-      .select('id, email, name, password')
+      .select('id, email, name, password, department')
       .eq('email', email.trim())
       .single()
 
@@ -29,23 +45,37 @@ export const api = {
 
     const fakeToken = btoa(`${data.id}:${Date.now()}`)
     setToken(fakeToken)
-    return { access_token: fakeToken, doctor: { id: data.id, email: data.email, name: data.name } }
+    const doctor = { id: data.id, email: data.email, name: data.name, department: data.department }
+    setDoctorInfo(doctor)
+    return { access_token: fakeToken, doctor }
   },
 
   async logout() {
     setToken(null)
+    setDoctorInfo(null)
   },
 
   async getMe() {
     const token = getToken()
     if (!token) throw new Error('Not authenticated')
-    return { authenticated: true }
+    return getDoctorInfo() || { authenticated: true }
   },
 
   async getAllAppointments() {
     const { data, error } = await supabase
       .from('appointments')
       .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) throw new Error(error.message)
+    return data || []
+  },
+
+  async getAppointmentsByDepartment(department) {
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .eq('department', department)
       .order('created_at', { ascending: false })
 
     if (error) throw new Error(error.message)
@@ -72,7 +102,10 @@ export const api = {
         department: data.department,
         appointment_date: data.appointment_date,
         appointment_time: data.appointment_time,
-        status: data.status || 'Confirmed',
+        age: data.age || null,
+        gender: data.gender || null,
+        cause_of_visit: data.cause_of_visit || null,
+        status: 'Pending',
       })
       .select()
       .single()
@@ -81,10 +114,10 @@ export const api = {
     return row
   },
 
-  async updateAppointment(id, data) {
+  async updateAppointmentStatus(id, status) {
     const { data: row, error } = await supabase
       .from('appointments')
-      .update({ status: data.status })
+      .update({ status })
       .eq('id', id)
       .select()
       .single()

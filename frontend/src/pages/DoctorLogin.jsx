@@ -40,7 +40,6 @@ export default function DoctorLogin() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
       <header className="glass border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
@@ -55,7 +54,6 @@ export default function DoctorLogin() {
         </div>
       </header>
 
-      {/* Centered Login Card */}
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <Card className="w-full max-w-md border-slate-200 shadow-2xl shadow-slate-200/40 overflow-hidden">
           <CardHeader className="bg-gradient-to-br from-slate-50 to-gray-100 pb-8 text-center">
@@ -108,9 +106,10 @@ export default function DoctorLogin() {
             >
               {isSubmitting ? 'Signing in...' : <>Sign In <ArrowRight className="w-4 h-4 ml-2" /></>}
             </Button>
-            <p className="text-xs text-slate-400 text-center">
-              Demo credentials: doctor@bookmed.com / doctor123
-            </p>
+            <div className="text-xs text-slate-400 text-center space-y-1">
+              <p>Demo: doctor@bookmed.com / doctor123 (General Medicine)</p>
+              <p>Also: cardio@bookmed.com, neuro@bookmed.com, derma@bookmed.com, etc.</p>
+            </div>
           </CardContent>
         </Card>
       </div>
