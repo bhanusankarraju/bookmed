@@ -139,7 +139,7 @@ export default function DoctorDashboard() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-900 tracking-tight">BookMed Clinical Hub</h1>
-              <p className="text-xs text-slate-500 font-medium">{doctor?.department}</p>
+              <p className="text-xs text-slate-500 font-medium">{doctor?.name} · {doctor?.department}</p>
             </div>
           </Link>
           <Button variant="ghost" size="sm" onClick={handleLogout} className="text-slate-600 hover:text-red-600 hover:bg-red-50">
